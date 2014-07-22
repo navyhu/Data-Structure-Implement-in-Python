@@ -36,3 +36,5 @@ Icon
 
 *.pyc
 *.pyw
+*.swp
+*~
