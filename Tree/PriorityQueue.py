@@ -35,29 +35,46 @@ class PriorityQueue(object):
         if len(values) == 0:
             return None
 
-        #get the element been deleted
+        if len(values) == 1:
+            return values.pop(0)
+
+        #get the element been deleted, percolate down
         deleteElement = values[0]
+        index = 0
+        values[0] = values.pop(len(values) - 1)
 
-        #Percolate up, fill the root with it's child(eventually with the last
-        # node
-        index = len(values) - 1
-
-        if index == 0:
-            values.pop(index)
-            return deleteElement
-
-        current = values[index]
-        parent = values[int(index/2)]
-
-        while index > 0:
-            parent = values[int(index/2)]
-            values[int(index/2)] = current
-            index = int(index/2)
-
-            current = parent
-
-        #remove the last element
-        values.pop(index)
+        while index*2 + 1 < len(values):
+            #Find out the smaller child
+            lindex = (index + 1)*2 - 1 #left child
+            rindex = (index + 1)*2      #right child
+            if rindex < len(values):
+                if values[lindex] < values[rindex]:
+                    if values[index] > values[lindex]:
+                        #Switch the parent and the left child
+                        current = values[index]
+                        values[index] = values[lindex]
+                        values[lindex] = current
+                        index = lindex
+                    else:
+                        break
+                else:
+                    if values[index] > values[rindex]:
+                        #Switch the parent and the right child
+                        current = values[index]
+                        values[index] = values[rindex]
+                        values[rindex] = current
+                        index = rindex
+                    else:
+                        break
+            else:
+                if values[index] > values[lindex]:
+                    #switch the parent and the left child
+                    current = values[index]
+                    values[index] = values[lindex]
+                    values[lindex] = current
+                    index = lindex
+                else:
+                    break
 
         return deleteElement
 
