@@ -1,10 +1,13 @@
 import random
 
 class Sort(object):
-    def swap(self, value1, value2):
-        tmp = value1
-        value1 = value2
-        value2 = tmp
+    def randomValues(self, count):
+        values = []
+        for i in range(0, count):
+            value = random.randint(0, count*10)
+            values.append(value)
+
+        return values
 
     def insertionSort(self, values):
         count = len(values)
@@ -18,22 +21,31 @@ class Sort(object):
                     values[j] = tmp
                 else:
                     break
+    
+    def shellSort(self, values):
+        count = len(values)
+        increment = int(count/2)
 
-    def randomValues(self, count):
-        values = []
-        for i in range(0, count):
-            value = random.randint(0, count*10)
-            values.append(value)
+        while increment > 0:
+            for i in range(increment, count):
+                for j in range(i, increment - 1, -increment):
+                    if values[j] < values[j - increment]:
+                        tmp = values[j - increment]
+                        values[j - increment] = values[j]
+                        values[j] = tmp
+                    else:
+                        break
 
-        return values
-
+            increment = int(increment/2)
+    
 if __name__ == '__main__':
     #values = [3, 4, 2, 6, 78, 21, 0, 32, 79]
 
     
     sort = Sort()
-    values = sort.randomValues(500)
+    values = sort.randomValues(20)
     print(values)
-    sort.insertionSort(values)
+    #sort.insertionSort(values)
+    sort.shellSort(values)
 
     print(values)
